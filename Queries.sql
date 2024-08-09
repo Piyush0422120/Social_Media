@@ -44,10 +44,10 @@ WHERE post.user_id IS NULL;
 -- Users with most combined likes on all posts 
 
 SELECT users.user_id,
-	   username,
-	   COUNT(DISTINCT post.post_id) AS total_posts,
-	   COUNT(post_likes.user_id) AS total_likes,
-	   COUNT(post_likes.user_id)/COUNT(DISTINCT post.post_id) AS avg_likes_per_post
+       username,
+       COUNT(DISTINCT post.post_id) AS total_posts,
+       COUNT(post_likes.user_id) AS total_likes,
+       COUNT(post_likes.user_id)/COUNT(DISTINCT post.post_id) AS avg_likes_per_post
 FROM users
 LEFT JOIN post
 ON users.user_id=post.user_id
@@ -69,8 +69,8 @@ FROM post;
 -- Most used photos in posts 
 
 SELECT post.photo_id, 
-	   Photos.photo_url,
-	   COUNT(post.photo_id) total_usage
+       Photos.photo_url,
+       COUNT(post.photo_id) total_usage
 FROM post
 LEFT JOIN photos
 ON post.photo_id=photos.photo_id
@@ -82,8 +82,8 @@ ORDER BY total_usage DESC;
 -- Most used videos in posts
 
 SELECT post.video_id, 
-	   videos.video_url,
-	   COUNT(videos.video_id) total_usage
+       videos.video_url,
+       COUNT(videos.video_id) total_usage
 FROM post
 LEFT JOIN videos
 ON post.video_id=videos.video_id
@@ -117,8 +117,8 @@ ORDER BY user_id ASC;
 -- Selecting posts on basis of total bookmarks (with atleast 1 bookmark)
 
 SELECT bookmarks.post_id,
-	   caption,
-	   COUNT(bookmarks.post_id) AS total_bookmarks
+       caption,
+       COUNT(bookmarks.post_id) AS total_bookmarks
 FROM post
 INNER JOIN bookmarks
 ON bookmarks.post_id=post.post_id
@@ -149,9 +149,9 @@ LIMIT 5;
 -- Selecting posts on basis of number comments
 
 SELECT users.user_id,
-	   username,
-	   caption, 
-           Count(Comments.post_id) AS total_comments
+       username,
+       caption, 
+       Count(Comments.post_id) AS total_comments
 FROM Post
 LEFT JOIN comments
 ON post.post_id=comments.post_id
@@ -210,9 +210,9 @@ FROM comments;
 -- Selecting comments on basis of number of comment_likes
 
 SELECT users.user_id,
-	   username,
-	   comment_text,
-           COUNT(comment_likes.comment_id) AS total_comment_likes
+       username,
+       comment_text,
+       COUNT(comment_likes.comment_id) AS total_comment_likes
 FROM comments
 LEFT JOIN users
 ON users.user_id=comments.user_id
