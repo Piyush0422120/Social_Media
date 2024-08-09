@@ -5,8 +5,8 @@ USE social_media;
 -- Selecting users on basis of number of posts (with atleast 1 post) 
 
 SELECT  users.user_id,
-		users.username, 
-		Count(post.user_id) AS total_posts
+	users.username, 
+	Count(post.user_id) AS total_posts
 FROM users
 INNER JOIN post
 ON users.user_id=post.user_id
@@ -18,9 +18,9 @@ ORDER BY total_posts DESC;
 -- Selecting posts on basis of number of likes 
 
 SELECT users.user_id,
-	   users.username,
+       users.username,
        post.caption, 
-	   COUNT(post_likes.user_id) AS total_likes
+       COUNT(post_likes.user_id) AS total_likes
 FROM users
 LEFT JOIN post
 ON users.user_id=post.user_id
@@ -61,7 +61,7 @@ ORDER BY total_likes DESC;
 -- Average post by users
 
 SELECT ROUND(COUNT(post_id)/(SELECT(COUNT(user_id))
-					   FROM users),1) AS avg_posts_per_user		  	
+			     FROM users),1) AS avg_posts_per_user		  	
 FROM post;
 
 -- ----------------------------------------------------------
@@ -95,7 +95,7 @@ ORDER BY total_usage DESC;
 -- Selecting users on basis of number of logins (with atleast 1 login)
 
 SELECT login.user_id,username, 
-	   COUNT(login_id) AS total_logins
+       COUNT(login_id) AS total_logins
 FROM users
 INNER JOIN login
 ON users.user_id=login.user_id
@@ -109,7 +109,7 @@ ORDER BY total_logins DESC;
 SELECT user_id, username
 FROM users
 WHERE user_id NOT IN (SELECT user_id
-					  FROM login)
+		      FROM login)
 ORDER BY user_id ASC;
 
 -- ----------------------------------------------------------
@@ -132,14 +132,14 @@ ORDER BY total_bookmarks DESC;
 SELECT post_id, caption
 FROM post
 WHERE post_id NOT IN (SELECT post_id
-					  FROM bookmarks);
+		      FROM bookmarks);
                       
 -- ----------------------------------------------------------
 -- Query 12
 -- Top 5 longest captions in post
 
 SELECT post_id, caption,
-	   CHAR_LENGTH(caption) AS total_characters
+       CHAR_LENGTH(caption) AS total_characters
 FROM post
 ORDER BY total_characters DESC
 LIMIT 5;
@@ -151,7 +151,7 @@ LIMIT 5;
 SELECT users.user_id,
 	   username,
 	   caption, 
-       Count(Comments.post_id) AS total_comments
+           Count(Comments.post_id) AS total_comments
 FROM Post
 LEFT JOIN comments
 ON post.post_id=comments.post_id
@@ -165,7 +165,7 @@ ORDER BY total_comments DESC;
 -- Users who recievd most cummulative comments on posts
 
 SELECT users.user_id,
-	   username,
+       username,
        COUNT(Comments.post_id) AS total_comments_recieved,
        COUNT(DISTINCT post.post_id) AS total_posts,
        COUNT(Comments.post_id)/COUNT(DISTINCT post.post_id) AS avg_comments
@@ -182,7 +182,7 @@ ORDER BY total_comments_recieved DESC;
 -- Selecting users by number of comments (Including those with 0 comments)
 
 SELECT users.user_id,
-	   username,
+       username,
        COUNT(comments.user_id) AS Total_comments
 FROM users
 LEFT JOIN comments
@@ -195,14 +195,14 @@ ORDER BY total_comments;
 -- Average comment/per user
 
 SELECT ROUND(COUNT(comment_id)/(SELECT COUNT(user_id)	
-						  FROM users),2) AS avg_comments
+				FROM users),2) AS avg_comments
 FROM comments;
 -- ----------------------------------------------------------
 -- Query 17
 -- Longest comment by characters
 
 SELECT ROUND(COUNT(comment_id)/(SELECT COUNT(user_id)	
-						  FROM users),2) AS avg_comments
+				FROM users),2) AS avg_comments
 FROM comments;
 
 -- ----------------------------------------------------------
@@ -212,7 +212,7 @@ FROM comments;
 SELECT users.user_id,
 	   username,
 	   comment_text,
-       COUNT(comment_likes.comment_id) AS total_comment_likes
+           COUNT(comment_likes.comment_id) AS total_comment_likes
 FROM comments
 LEFT JOIN users
 ON users.user_id=comments.user_id
@@ -226,7 +226,7 @@ ORDER BY total_comment_likes DESC;
 -- Users who recieved most cummulative likes on their comments
 
 SELECT users.user_id,
-	   username,
+       username,
        COUNT(comment_likes.comment_id) AS total_comment_likes
 FROM comments
 LEFT JOIN users
@@ -241,8 +241,8 @@ ORDER BY total_comment_likes DESC;
 -- users who liked most number of comments
 
 SELECT users.user_id,
-	   username,
-	   COUNT(comment_likes.comment_id) AS number_of_comments_liked
+       username,
+       COUNT(comment_likes.comment_id) AS number_of_comments_liked
 FROM users
 INNER JOIN comment_likes
 ON users.user_id=comment_likes.user_id
@@ -254,7 +254,7 @@ ORDER BY number_of_comments_liked DESC;
 -- Average likes per comment
 
 SELECT ROUND(COUNT(user_id)/(SELECT COUNT(comment_id)
-					   FROM comments),2) AS Avg_likes_per_comment
+	                     FROM comments),2) AS Avg_likes_per_comment
 FROM comment_likes;
 
 -- ----------------------------------------------------------
@@ -262,7 +262,7 @@ FROM comment_likes;
 -- Selecting hashtags on basis of usage
 
 SELECT hashtag_name,
-	   COUNT(post_tags.post_id) AS Usage_of_hashtag
+       COUNT(post_tags.post_id) AS Usage_of_hashtag
 FROM hashtags
 INNER JOIN post_tags
 ON hashtags.hashtag_id=post_tags.hashtag_id
@@ -274,7 +274,7 @@ ORDER BY Usage_of_hashtag DESC;
 -- Most followed hashtag
 
 SELECT  hashtag_name,
-		COUNT(hashtag_follow.user_id) AS followers
+	COUNT(hashtag_follow.user_id) AS followers
 FROM hashtags
 LEFT JOIN hashtag_follow
 ON hashtags.hashtag_id=hashtag_follow.hashtag_id
@@ -286,8 +286,8 @@ ORDER BY followers DESC;
 -- Selecting users on basis of followers
 
 SELECT  user_id,
-		username,
-		COUNT(followee_id) AS total_followers
+	username,
+	COUNT(followee_id) AS total_followers
 FROM users
 LEFT JOIN follows
 ON user_id=follower_id
@@ -300,8 +300,8 @@ ORDER BY total_followers DESC;
 -- Selecting accounts on basis of how many other accounts they follow
 
 SELECT  user_id,
-		username,
-		COUNT(follower_id) AS accounts_followed
+	username,
+	COUNT(follower_id) AS accounts_followed
 FROM users
 LEFT JOIN follows
 ON users.user_id=followee_id
@@ -314,7 +314,7 @@ ORDER BY accounts_followed DESC;
 -- Selecting accounts who have followed themselves (Glitch)
 
 SELECT  user_id,
-		username
+	username
 FROM users
 INNER JOIN follows
 ON users.user_id=followee_id
@@ -326,7 +326,7 @@ ORDER BY user_id ASC;
 -- Selecting users on basis of posts liked
 
 SELECT users.user_id,
-	   username,
+       username,
        COUNT(post_id) AS posts_liked
 FROM users
 INNER JOIN post_likes
